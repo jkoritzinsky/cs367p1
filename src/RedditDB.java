@@ -9,7 +9,7 @@ public class RedditDB {
 	}
 
 	public List<User> getUsers() {
-		//TODO
+		return new ArrayList<User>(users);
 	}
 
 	public User addUser(String name) {

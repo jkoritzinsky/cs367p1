@@ -27,27 +27,37 @@ public class User {
 	}
 
 	public List<String> getSubscribed() {
-		//TODO
+		return new ArrayList<String>(subscribed);
 	}
 
 	public List<Post> getPosted() {
-		//TODO
+		return new ArrayList<Post>(posted);
 	}
 
 	public List<Post> getLiked() {
-		//TODO
+		return new ArrayList<Post>(liked);
 	}
 
 	public List<Post> getDisliked() {
-		//TODO
+		return new ArrayList<Post>(disliked);
 	}
 
 	public void subscribe(String subreddit) {
-		//TODO
+		if(subreddit == null)
+			throw new IllegalArgumentException("subreddit");
+		if(subscribed.contains(subreddit)) {
+			unsubscribe(subreddit);
+		}
+		else {
+			subscribed.add(subreddit);
+		}
+			
 	}
 
 	public void unsubscribe(String subreddit) {
-		//TODO
+		if(subreddit == null)
+			throw new IllegalArgumentException("subreddit");
+		subscribed.remove(subreddit);
 	}
 
 	public Post addPost(String subreddit, PostType type, String title) {
@@ -91,7 +101,7 @@ public class User {
 	public void undoDislike(Post post) {
 		if(post == null)
 			throw new IllegalArgumentException("post");
-		//TODO
+		disliked.remove(post);
 	}
 }
 
