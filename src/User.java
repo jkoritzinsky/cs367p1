@@ -61,7 +61,9 @@ public class User {
 	}
 
 	public Post addPost(String subreddit, PostType type, String title) {
-		return new Post(this, subreddit, type, title);
+		Post newPost = new Post(this, subreddit, type, title);
+		posted.add(newPost);
+		return newPost;
 	}
 
 	public void like(Post post) {
