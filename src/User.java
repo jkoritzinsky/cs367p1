@@ -10,7 +10,12 @@ public class User {
 	private List<Post> disliked;
 
 	public User(String name) {
-		//TODO
+		this.name = name;
+		this.karma = new Karma();
+		subscribed = new ArrayList<String>();
+		posted = new ArrayList<Post>();
+		liked = new ArrayList<Post>();
+		disliked = new ArrayList<Post>();
 	}
 
 	public String getName() {
@@ -46,22 +51,46 @@ public class User {
 	}
 
 	public Post addPost(String subreddit, PostType type, String title) {
-		//TODO
+		return new Post(this, subreddit, type, title);
 	}
 
 	public void like(Post post) {
-		//TODO
+		if(post == null)
+			throw new IllegalArgumentException("post");
+		if(liked.contains(post)) {
+			undoLike(post);
+			return;
+		}
+		else if(disliked.contains(post)) {
+			undoDislike(post);
+		}
+		liked.add(post);
+		post.upvote();
 	}
 
 	public void undoLike(Post post) {
-		//TODO
+		if(post == null)
+			throw new IllegalArgumentException("post");
+		liked.remove(post);
 	}
 
 	public void dislike(Post post) {
-		//TODO
+		if(post == null)
+			throw new IllegalArgumentException("post");
+		if(disliked.contains(post)) {
+			undoDislike(post);
+			return;
+		}
+		else if(liked.contains(post)) {
+			undoLike(post);
+		}
+		disliked.add(post);
+		post.downvote();
 	}
 
 	public void undoDislike(Post post) {
+		if(post == null)
+			throw new IllegalArgumentException("post");
 		//TODO
 	}
 }

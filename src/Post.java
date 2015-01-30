@@ -6,15 +6,21 @@ public class Post {
 	private int karma;
 
 	public Post(User user, String subreddit, PostType type, String title) {
-		//TODO
+		this.user = user;
+		this.subreddit = subreddit;
+		this.type = type;
+		this.title = title;
+		karma = 0;
 	}
 
 	public void upvote() {
-		//TODO
+		karma += 2;
+		user.getKarma().upvote(type);
 	}
 
 	public void downvote() {
-		//TODO
+		karma -= 1;
+		user.getKarma().downvote(type);
 	}
 
 	public User getUser() {

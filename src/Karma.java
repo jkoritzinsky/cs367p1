@@ -8,11 +8,29 @@ public class Karma {
 	}
 
 	public void upvote(PostType type) {
-		//TODO
+		switch(type) {
+		case COMMENT:
+			commentKarma += 2;
+			break;
+		case LINK:
+			linkKarma += 2;
+			break;
+		default:
+			break;
+		}
 	}
 
 	public void downvote(PostType type) {
-		//TODO
+		switch(type) {
+		case COMMENT:
+			commentKarma -= 1;
+			break;
+		case LINK:
+			linkKarma -= 1;
+			break;
+		default:
+			break;
+		}
 	}
 
 	public int getLinkKarma() {
