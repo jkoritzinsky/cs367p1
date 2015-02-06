@@ -11,18 +11,24 @@
 
 /**
  * A post in our Reddit simulator
+ * 
  * @author Jeremy Koritzinsky
  *
  */
 public class Post {
+	/** The author of the post */
 	final private User user;
+	/** The subreddit the post is in */
 	final private String subreddit;
+	/** The type of post */
 	final private PostType type;
+	/** The post title */
 	final private String title;
 	private int karma;
 
 	/**
 	 * Constructs a post with an author, subreddit, post type, and title
+	 * 
 	 * @param user The author
 	 * @param subreddit The subreddit the post is in
 	 * @param type The type of post
@@ -37,8 +43,8 @@ public class Post {
 	}
 
 	/**
-	 * Upvotes this post.
-	 * Increases the karma of this post and of the author (depending on type) by 2.
+	 * Upvotes this post. Increases the karma of this post and of the author
+	 * (depending on type) by 2.
 	 */
 	public void upvote() {
 		karma += 2;
@@ -46,8 +52,8 @@ public class Post {
 	}
 
 	/**
-	 * Downvotes this post.
-	 * Decreases the karma of this post and of the author (depending on type) by 1.
+	 * Downvotes this post. Decreases the karma of this post and of the author
+	 * (depending on type) by 1.
 	 */
 	public void downvote() {
 		karma -= 1;
@@ -56,6 +62,7 @@ public class Post {
 
 	/**
 	 * Gets the author of the post.
+	 * 
 	 * @return The author of the post
 	 */
 	public User getUser() {
@@ -64,6 +71,7 @@ public class Post {
 
 	/**
 	 * Gets the subreddit the post is in.
+	 * 
 	 * @return The subreddit the post is in
 	 */
 	public String getSubreddit() {
@@ -72,6 +80,7 @@ public class Post {
 
 	/**
 	 * Gets the type of post.
+	 * 
 	 * @return The type of post
 	 */
 	public PostType getType() {
@@ -80,6 +89,7 @@ public class Post {
 
 	/**
 	 * Gets the title of the post.
+	 * 
 	 * @return The title of the post
 	 */
 	public String getTitle() {
@@ -88,10 +98,10 @@ public class Post {
 
 	/**
 	 * Gets the current karma of the post.
+	 * 
 	 * @return The current karma of the post
 	 */
 	public int getKarma() {
 		return this.karma;
 	}
 }
-

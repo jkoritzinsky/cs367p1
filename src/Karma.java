@@ -11,11 +11,14 @@
 
 /**
  * Tracks a user's karma, separated for links and comments.
+ * 
  * @author Jeremy Koritzinsky
  *
  */
 public class Karma {
+	/** Karma for link posts */
 	private int linkKarma;
+	/** Karma for comment posts */
 	private int commentKarma;
 
 	/**
@@ -27,12 +30,13 @@ public class Karma {
 	}
 
 	/**
-	 * Increases the correct karma type by 2.
-	 * {@link PostType.SELF} has no karma, so it does not increase karma.
+	 * Increases the correct karma type by 2. {@link PostType.SELF} has no
+	 * karma, so it does not increase karma.
+	 * 
 	 * @param type The type of karma to increase.
 	 */
 	public void upvote(PostType type) {
-		switch(type) {
+		switch (type) {
 		case COMMENT:
 			commentKarma += 2;
 			break;
@@ -45,12 +49,13 @@ public class Karma {
 	}
 
 	/**
-	 * Decreases the correct karma type by 1.
-	 * {@link PostType.SELF} has no karma, so it does not decrease karma.
+	 * Decreases the correct karma type by 1. {@link PostType.SELF} has no
+	 * karma, so it does not decrease karma.
+	 * 
 	 * @param type The type of karma to increase.
 	 */
 	public void downvote(PostType type) {
-		switch(type) {
+		switch (type) {
 		case COMMENT:
 			commentKarma -= 1;
 			break;
@@ -64,6 +69,7 @@ public class Karma {
 
 	/**
 	 * Gets the current link karma.
+	 * 
 	 * @return The current link karma.
 	 */
 	public int getLinkKarma() {
@@ -72,10 +78,10 @@ public class Karma {
 
 	/**
 	 * Gets the current comment karma.
+	 * 
 	 * @return The current comment karma.
 	 */
 	public int getCommentKarma() {
 		return this.commentKarma;
 	}
 }
-
