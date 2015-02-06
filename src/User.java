@@ -63,6 +63,7 @@ public class User {
 	public Post addPost(String subreddit, PostType type, String title) {
 		Post newPost = new Post(this, subreddit, type, title);
 		posted.add(newPost);
+		like(newPost);
 		return newPost;
 	}
 
@@ -84,6 +85,8 @@ public class User {
 		if(post == null)
 			throw new IllegalArgumentException("post");
 		liked.remove(post);
+		post.downvote();
+		post.downvote(); // Two downvotes = undoing one upvote
 	}
 
 	public void dislike(Post post) {
@@ -104,6 +107,8 @@ public class User {
 		if(post == null)
 			throw new IllegalArgumentException("post");
 		disliked.remove(post);
+		post.upvote(); // One upvote + one downvote
+		post.downvote(); // == Undoing one downvote
 	}
 }
 

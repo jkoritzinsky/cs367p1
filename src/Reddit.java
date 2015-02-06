@@ -35,7 +35,7 @@ public class Reddit {
 				while(fileIn.hasNextLine()) {
 					String[] postData = fileIn.nextLine().split(",", 3);
 					String subreddit = postData[0].trim().toLowerCase();
-					PostType type = Enum.valueOf(PostType.class, postData[1].trim().toLowerCase());
+					PostType type = Enum.valueOf(PostType.class, postData[1].trim());
 					String title = postData[2];
 					newUser.addPost(subreddit, type, title);
 				}
@@ -51,6 +51,7 @@ public class Reddit {
 			}
 		}
 		runMainMenuPrompt();
+		
 	}
 	private static void runMainMenuPrompt() {
 		User currentUser = null;
@@ -61,11 +62,23 @@ public class Reddit {
 			String[] splitEntry = entry.split(" ");
 			String command = splitEntry[0];
 			String argument = "";
-			if(commandHasArgument(command)) {
+			if(commandAlwaysHasArgument(command)) {
+				if(splitEntry.length == 1) {
+					System.out.print("Invalid command!");
+					continue;
+				}
 				argument = splitEntry[1];
 			}
+			else if(commandHasOptionalArgument(command)) {
+				if(splitEntry.length == 1) {
+					argument = "";
+				}
+				else {
+					argument = splitEntry[1];
+				}
+			}
 			if(isAdminOnlyCommand(command)) {
-				if(currentUser.getName() != "admin") {
+				if(currentUser == null || currentUser.getName() != "admin") {
 					System.out.println("Invalid command!");
 					continue;
 				}
@@ -76,36 +89,46 @@ public class Reddit {
 				StringBuilder builder = new StringBuilder();
 				while(userIter.hasNext()) {
 					User user = userIter.next();
-					if(!user.getName().equals("admin")) {
-						builder.append(user.getName()).append('\t');
-						builder.append(user.getKarma().getLinkKarma()).append('\t');
-						builder.append(user.getKarma().getCommentKarma()).append('\n');
-					}
+					builder.append(user.getName()).append('\t');
+					builder.append(user.getKarma().getLinkKarma()).append('\t');
+					builder.append(user.getKarma().getCommentKarma()).append('\n');
 				}
-				System.out.println(builder.toString());
+				System.out.print(builder.toString());
 				break;
 			case "d":
 				db.delUser(argument.toLowerCase());
+				System.out.println("User " + argument.toLowerCase() + " deleted.");
 				break;
 			case "l":
 				currentUser = doLoginAndLogout(currentUser, argument.toLowerCase());
 				break;
 			case "f":
 				Iterator<Post> frontpageIter = db.getFrontpage(currentUser).iterator();
+				System.out.println("Displaying the front page...");
 				runSubmenu(frontpageIter, currentUser, scanner);
 				break;
 			case "r":
 				Iterator<Post> subredditIter = db.getFrontpage(currentUser, argument.toLowerCase()).iterator();
+				System.out.println("Displaying /r/" + argument.toLowerCase() + "...");
 				runSubmenu(subredditIter, currentUser, scanner);
 				break;
 			case "u":
-				Iterator<Post> userPostsIter = currentUser.getPosted().iterator();
+				User targetUser = db.findUser(argument);
+				if(targetUser == null) {
+					System.out.println("Invalid Command!");
+					break;
+				}
+				Iterator<Post> userPostsIter = targetUser.getPosted().iterator();
+				System.out.println("Displaying /u/" + argument.toLowerCase() + "...");
 				runSubmenu(userPostsIter, currentUser, scanner);
+				break;
 			case "x":
 				System.out.println("Exiting to the real world...");
+				scanner.nextLine();
 				return;
 			default:
 				System.out.println("Invalid command!");
+				break;
 			}
 		}
 	}
@@ -121,39 +144,46 @@ public class Reddit {
 	
 	private static void runSubmenu(Iterator<Post> postIter, User currentUser, Scanner scanner) {
 		while(postIter.hasNext()) {
+			boolean moveToNext = true;
 			Post currentPost = postIter.next();
-			System.out.println(currentPost.getKarma() + "\t" + currentPost.getTitle());
-			displayInputPrompt(currentUser);
-			String command = scanner.nextLine();
-			switch(command) {
-			case "a":
-				if(currentUser == null) {
-					System.out.println("Login to like post.");
+			do {
+				moveToNext = true;
+				System.out.println(currentPost.getKarma() + "\t" + currentPost.getTitle().trim());
+				displayInputPrompt(currentUser);
+				String command = scanner.nextLine();
+				switch(command) {
+				case "a":
+					if(currentUser == null) {
+						System.out.println("Login to like post.");
+						moveToNext = false;
+					}
+					else {
+						currentUser.like(currentPost);
+					}
+					break;
+				case "z":
+					if(currentUser == null) {
+						System.out.println("Login to dislike post.");
+						moveToNext = false;
+					}
+					else {
+						currentUser.dislike(currentPost);
+					}
+					break;
+				case "j":
+					// Do nothing and move to next post
+					break;
+				case "x":
+					System.out.println("Exiting to the main menu...");
+					return;
+				default:
+					System.out.println("Invalid command!");
+					moveToNext = false;
+					break;
 				}
-				else {
-					currentUser.like(currentPost);
-				}
-				break;
-			case "z":
-				if(currentUser == null) {
-					System.out.println("Login to dislike post.");
-				}
-				else {
-					currentUser.dislike(currentPost);
-				}
-				break;
-			case "j":
-				// Do nothing and move to next post
-				break;
-			case "x":
-				System.out.println("Exiting to the main menu...");
-				return;
-			default:
-				System.out.println("Invalid command!");
-				break;
-			}
+			} while(!moveToNext);
 		}
-		System.out.println("No posts to display.");
+		System.out.println("No posts left to display.");
 		System.out.println("Exiting to the main menu...");
 	}
 	
@@ -184,9 +214,12 @@ public class Reddit {
 		return currentUser;
 	}
 	
-	private static boolean commandHasArgument(String command) {
-		return command.equals("d") || command.equals("l")
-				|| command.equals("r") || command.equals("u");
+	private static boolean commandAlwaysHasArgument(String command) {
+		return command.equals("d") || command.equals("r") || command.equals("u");
+	}
+	
+	private static boolean commandHasOptionalArgument(String command) {
+		return command.equals("l");
 	}
 	
 	private static boolean isAdminOnlyCommand(String command) {

@@ -57,6 +57,7 @@ public class RedditDB {
 			Post dislikedPost = dislikedIter.next();
 			userToDelete.undoDislike(dislikedPost);
 		}
+		users.remove(userToDelete);
 		return true;
 	}
 
