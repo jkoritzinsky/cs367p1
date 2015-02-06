@@ -1,6 +1,22 @@
+///////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  Reddit.java
+// File:             User.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Jeremy Koritzinsky <jeremy.koritzinsky@wisc.edu>
+// CS Login:         koritzinsky
+// Lecturer's Name:  Jim Skrentny
+//
+
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * A user in our Reddit simulation
+ * @author Jeremy Koritzinsky
+ *
+ */
 public class User {
 	final private String name;
 	final private Karma karma;
@@ -9,6 +25,10 @@ public class User {
 	private List<Post> liked;
 	private List<Post> disliked;
 
+	/**
+	 * Constructs a user with their name
+	 * @param name The name of the new user.
+	 */
 	public User(String name) {
 		this.name = name;
 		this.karma = new Karma();
@@ -18,30 +38,58 @@ public class User {
 		disliked = new ArrayList<Post>();
 	}
 
+	/**
+	 * Gets the name of the user.
+	 * @return The name of the user
+	 */
 	public String getName() {
 		return this.name;
 	}
 
+	/**
+	 * Gets the {@link Karma} of the user.
+	 * @return The karma of the user.
+	 */
 	public Karma getKarma() {
 		return this.karma;
 	}
 
+	/**
+	 * Gets a shallow copy of the subreddits that the user is subscribed to.
+	 * @return A list of subreddits this user is subscribed to.
+	 */
 	public List<String> getSubscribed() {
 		return new ArrayList<String>(subscribed);
 	}
 
+	/**
+	 * Gets a shallow copy of the list of posts this user has posted.
+	 * @return A list of the posts this user has posted.
+	 */
 	public List<Post> getPosted() {
 		return new ArrayList<Post>(posted);
 	}
 
+	/**
+	 * Gets a shallow copy of the list of posts this user has liked.
+	 * @return A list of the posts this user has liked.
+	 */
 	public List<Post> getLiked() {
 		return new ArrayList<Post>(liked);
 	}
 
+	/**
+	 * Gets a shallow copy of the list of posts this user has disliked.
+	 * @return A list of the posts this user has disliked.
+	 */
 	public List<Post> getDisliked() {
 		return new ArrayList<Post>(disliked);
 	}
 
+	/**
+	 * Toggles this user's subscription to a subreddit.
+	 * @param subreddit The subreddit to toggle subscription to.
+	 */
 	public void subscribe(String subreddit) {
 		if(subreddit == null)
 			throw new IllegalArgumentException("subreddit");
@@ -54,12 +102,23 @@ public class User {
 			
 	}
 
+	/**
+	 * Unsubscribes this user from the specified subreddit
+	 * @param subreddit The subreddit to unsubscribe from.
+	 */
 	public void unsubscribe(String subreddit) {
 		if(subreddit == null)
 			throw new IllegalArgumentException("subreddit");
 		subscribed.remove(subreddit);
 	}
 
+	/**
+	 * Creates and likes a new post.
+	 * @param subreddit The subreddit the post is in
+	 * @param type The type of post
+	 * @param title The post title
+	 * @return The new post
+	 */
 	public Post addPost(String subreddit, PostType type, String title) {
 		Post newPost = new Post(this, subreddit, type, title);
 		posted.add(newPost);
@@ -67,6 +126,11 @@ public class User {
 		return newPost;
 	}
 
+	/**
+	 * Toggles a like on a post.
+	 * If this post is disliked, the dislike is removed before the post is liked.
+	 * @param post The post to like.
+	 */
 	public void like(Post post) {
 		if(post == null)
 			throw new IllegalArgumentException("post");
@@ -81,6 +145,10 @@ public class User {
 		post.upvote();
 	}
 
+	/**
+	 * Unlikes a post
+	 * @param post The post to unlike
+	 */
 	public void undoLike(Post post) {
 		if(post == null)
 			throw new IllegalArgumentException("post");
@@ -88,7 +156,12 @@ public class User {
 		post.downvote();
 		post.downvote(); // Two downvotes = undoing one upvote
 	}
-
+	
+	/**
+	 * Toggles a dislike on a post.
+	 * If this post is liked, the like is removed before the post is disliked.
+	 * @param post The post to like.
+	 */
 	public void dislike(Post post) {
 		if(post == null)
 			throw new IllegalArgumentException("post");
@@ -103,6 +176,10 @@ public class User {
 		post.downvote();
 	}
 
+	/**
+	 * Undislikes a post
+	 * @param post The post to undislike
+	 */
 	public void undoDislike(Post post) {
 		if(post == null)
 			throw new IllegalArgumentException("post");

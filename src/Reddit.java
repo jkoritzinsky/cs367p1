@@ -1,12 +1,32 @@
+///////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Title:            Reddit Simulator
+// Files:            Reddit.java, Post.java, User.java, Karma.java, RedditDB.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Jeremy Koritzinsky
+// Email:            jeremy.koritzinsky@wisc.edu
+// CS Login:         koritzinsky
+// Lecturer's Name:  Jim Skrentny
+//
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Iterator;
 import java.util.Scanner;
 
 
-
+/**
+ * The main class for the Reddit simulator
+ * @author Jeremy Koritzinsky
+ *
+ */
 public class Reddit {
 	private static RedditDB db;
+	/**
+	 * Entry point for the program
+	 * @param args The given command-line arguments.
+	 */
 	public static void main(String[] args) {
 		if(args.length == 0) {
 			System.out.println("Usage: java Reddit <FileNames>");
@@ -53,6 +73,10 @@ public class Reddit {
 		runMainMenuPrompt();
 		
 	}
+	
+	/**
+	 * Runs a loop that displays interacts with the main menu.
+	 */
 	private static void runMainMenuPrompt() {
 		User currentUser = null;
 		Scanner scanner = new Scanner(System.in);
@@ -133,6 +157,10 @@ public class Reddit {
 		}
 	}
 	
+	/**
+	 * Displays the input prompt for the current user.
+	 * @param currentUser The current user
+	 */
 	private static void displayInputPrompt(User currentUser) {
 		if(currentUser == null) {
 			System.out.print("[anon@reddit]$ ");
@@ -142,6 +170,12 @@ public class Reddit {
 		}
 	}
 	
+	/**
+	 * Runs the submenu for the given collection of posts.
+	 * @param postIter An iterator of a collection of posts.
+	 * @param currentUser The current user.
+	 * @param scanner A scanner that is connected to user input.
+	 */
 	private static void runSubmenu(Iterator<Post> postIter, User currentUser, Scanner scanner) {
 		while(postIter.hasNext()) {
 			boolean moveToNext = true;
@@ -187,6 +221,12 @@ public class Reddit {
 		System.out.println("Exiting to the main menu...");
 	}
 	
+	/**
+	 * Runs the login and logout commands.
+	 * @param currentUser The current user.
+	 * @param argument The name of the user to login or ""
+	 * @return null if the user has been logged out, or the newly logged in user.
+	 */
 	private static User doLoginAndLogout(User currentUser, String argument) {
 		if(argument.equals("")) { // Logout
 			if(currentUser != null) {
@@ -214,14 +254,29 @@ public class Reddit {
 		return currentUser;
 	}
 	
+	/**
+	 * Returns true if the command always requires an argument.
+	 * @param command The command to test.
+	 * @return true if the command always requires an argument; otherwise, false.
+	 */
 	private static boolean commandAlwaysHasArgument(String command) {
 		return command.equals("d") || command.equals("r") || command.equals("u");
 	}
 	
+	/**
+	 * Returns true if the command has optional arguments.
+	 * @param command The command to test.
+	 * @return true if the command has optional arguments; otherwise, false.
+	 */
 	private static boolean commandHasOptionalArgument(String command) {
 		return command.equals("l");
 	}
 	
+	/**
+	 * Returns true if the command can only be run by admin.
+	 * @param command The command to test.
+	 * @return true if the command can only be run by admin; otherwise, false.
+	 */
 	private static boolean isAdminOnlyCommand(String command) {
 		return command.equals("s") || command.equals("d");
 	}

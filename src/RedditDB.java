@@ -1,18 +1,47 @@
+///////////////////////////////////////////////////////////////////////////////
+//                   ALL STUDENTS COMPLETE THESE SECTIONS
+// Main Class File:  Reddit.java
+// File:             RedditDB.java
+// Semester:         CS367 Spring 2015
+//
+// Author:           Jeremy Koritzinsky <jeremy.koritzinsky@wisc.edu>
+// CS Login:         koritzinsky
+// Lecturer's Name:  Jim Skrentny
+//
+
 import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * A database of users in our Reddit simulator.
+ * @author Jeremy Koritzinsky
+ *
+ */
 public class RedditDB {
 	private List<User> users;
 
+	/**
+	 * Constructs an empty user database.
+	 */
 	public RedditDB() {
 		this.users = new ArrayList<User>();
 	}
 
+	/**
+	 * Gets a shallow copy of the list of current users.
+	 * @return A shallow copy of the list of current users.
+	 */
 	public List<User> getUsers() {
 		return new ArrayList<User>(users);
 	}
 
+	/**
+	 * Adds a new user with the given name.
+	 * @param name The name of the new user.
+	 * @return If the user was successfully created, the new user;
+	 *  otherwise, null.
+	 */
 	public User addUser(String name) {
 		if(findUser(name) == null) {
 			User newUser = new User(name);
@@ -22,6 +51,11 @@ public class RedditDB {
 		return null;
 	}
 
+	/**
+	 * Finds a user by name in the database.
+	 * @param name The name to search for.
+	 * @return If the user is found, the user object; otherwise null.
+	 */
 	public User findUser(String name) {
 		if(name == null)
 			throw new IllegalArgumentException("name");
@@ -32,6 +66,11 @@ public class RedditDB {
 		return null;
 	}
 
+	/**
+	 * Deletes a user by name.
+	 * @param name The name of the user to delete.
+	 * @return If the user successfully deleted, true; otherwise, false.
+	 */
 	public boolean delUser(String name) {
 		User userToDelete = findUser(name);
 		if(userToDelete == null) {
@@ -61,6 +100,12 @@ public class RedditDB {
 		return true;
 	}
 
+	/**
+	 * Gets the front page for the user,
+	 *  or all posts if the user is null
+	 * @param user The user to get the front page for.
+	 * @return A list of posts representing the front page.
+	 */
 	public List<Post> getFrontpage(User user) {
 		List<Post> allPosts = new ArrayList<Post>();
 		Iterator<User> userIter = users.iterator();
@@ -89,6 +134,12 @@ public class RedditDB {
 		return frontpage;
 	}
 
+	/**
+	 * Gets the front page for the given user and subreddit.
+	 * @param user The user to get the front page for.
+	 * @param subreddit The subreddit to get the front page for.
+	 * @return A list representing the front page for the user and subreddit.
+	 */
 	public List<Post> getFrontpage(User user, String subreddit) {
 		if(subreddit == null)
 			throw new IllegalArgumentException("subreddit");
