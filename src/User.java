@@ -38,6 +38,8 @@ public class User {
 	 * @param name The name of the new user.
 	 */
 	public User(String name) {
+		if (name == null)
+			throw new IllegalArgumentException("name");
 		this.name = name;
 		this.karma = new Karma();
 		subscribed = new ArrayList<String>();
@@ -137,6 +139,12 @@ public class User {
 	 * @return The new post
 	 */
 	public Post addPost(String subreddit, PostType type, String title) {
+		if (subreddit == null)
+			throw new IllegalArgumentException("subreddit");
+		if (type == null)
+			throw new IllegalArgumentException("type");
+		if (title == null)
+			throw new IllegalArgumentException("title");
 		Post newPost = new Post(this, subreddit, type, title); // New post from
 																// parameters
 		posted.add(newPost);

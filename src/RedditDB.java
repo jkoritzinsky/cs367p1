@@ -46,6 +46,8 @@ public class RedditDB {
 	 *         null.
 	 */
 	public User addUser(String name) {
+		if (name == null)
+			throw new IllegalArgumentException("name");
 		if (findUser(name) == null) {
 			User newUser = new User(name);
 			users.add(newUser);
@@ -77,6 +79,8 @@ public class RedditDB {
 	 * @return If the user successfully deleted, true; otherwise, false.
 	 */
 	public boolean delUser(String name) {
+		if (name == null)
+			throw new IllegalArgumentException("name");
 		User userToDelete = findUser(name);
 		if (userToDelete == null) {
 			return false;

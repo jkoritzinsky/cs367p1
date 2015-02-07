@@ -35,6 +35,14 @@ public class Post {
 	 * @param title The title of the post
 	 */
 	public Post(User user, String subreddit, PostType type, String title) {
+		if (user == null)
+			throw new IllegalArgumentException("user");
+		if (subreddit == null)
+			throw new IllegalArgumentException("subreddit");
+		if (type == null)
+			throw new IllegalArgumentException("type");
+		if (title == null)
+			throw new IllegalArgumentException("title");
 		this.user = user;
 		this.subreddit = subreddit;
 		this.type = type;

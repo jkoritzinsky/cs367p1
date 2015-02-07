@@ -104,8 +104,8 @@ public class Reddit {
 									// (not logged in) user
 		Scanner scanner = new Scanner(System.in);
 		while (true) { // This is an infinite loop purposely. The only exit
-						// condition is entering "x", which then directly return
-						// from the function
+						// condition is entering "x", which then directly
+						// returns from the function
 			displayInputPrompt(currentUser);
 			String entry = scanner.nextLine();
 			String[] splitEntry = entry.split(" "); // Commands and arguments
