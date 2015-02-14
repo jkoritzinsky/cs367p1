@@ -1,7 +1,8 @@
-///////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////
 //                   ALL STUDENTS COMPLETE THESE SECTIONS
 // Title:            Reddit Simulator
-// Files:            Reddit.java, Post.java, User.java, Karma.java, RedditDB.java
+// Files:            Reddit.java, Post.java, User.java, Karma.java,
+//						RedditDB.java
 // Semester:         CS367 Spring 2015
 //
 // Author:           Jeremy Koritzinsky
@@ -57,17 +58,17 @@ public class Reddit {
 													// filename to get user
 													// name.
 				}
-				User newUser = db.addUser(name.toLowerCase()); // Normalize
-																// user name to
-																// lower-case
-				String subscriptionLine = fileIn.nextLine(); // First line is
-																// subreddit
-																// subscriptions
-				String[] subscriptions = subscriptionLine.split(",");
-				for (int j = 0; j < subscriptions.length; ++j) {
-					// Remove extraneous whitespace from each end of the
-					// subreddit name and normalize as lower-case.
-					newUser.subscribe(subscriptions[j].trim().toLowerCase());
+				User newUser = db.addUser(name.toLowerCase());
+				//Normalize username to lower-case
+				if (fileIn.hasNextLine()) {
+					String subscriptionLine = fileIn.nextLine();
+					//First line is subreddit subscriptions
+					String[] subscriptions = subscriptionLine.split(",");
+					for (int j = 0; j < subscriptions.length; ++j) {
+						// Remove extraneous whitespace from each end of the
+						// subreddit name and normalize as lower-case.
+						newUser.subscribe(subscriptions[j].trim().toLowerCase());
+					}
 				}
 				while (fileIn.hasNextLine()) {
 					// Limit to 3 pieces to preserve commas in post title.
@@ -103,9 +104,8 @@ public class Reddit {
 									// null represents an anonymous
 									// (not logged in) user
 		Scanner scanner = new Scanner(System.in);
-		while (true) { // This is an infinite loop purposely. The only exit
-						// condition is entering "x", which then directly
-						// returns from the function
+		boolean exitMainMenu = false;
+		while (!exitMainMenu) {
 			displayInputPrompt(currentUser);
 			String entry = scanner.nextLine();
 			String[] splitEntry = entry.split(" "); // Commands and arguments
@@ -192,7 +192,7 @@ public class Reddit {
 				scanner.nextLine(); // Poll user for a newline to keep the
 									// program open for them to see the final
 									// output.
-				return; // Exit the main menu loop.
+				exitMainMenu = true;
 			default:
 				System.out.println("Invalid command!");
 				break;
