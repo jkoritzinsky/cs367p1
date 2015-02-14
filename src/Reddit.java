@@ -59,15 +59,16 @@ public class Reddit {
 													// name.
 				}
 				User newUser = db.addUser(name.toLowerCase());
-				//Normalize username to lower-case
+				// Normalize username to lower-case
 				if (fileIn.hasNextLine()) {
 					String subscriptionLine = fileIn.nextLine();
-					//First line is subreddit subscriptions
+					// First line is subreddit subscriptions
 					String[] subscriptions = subscriptionLine.split(",");
 					for (int j = 0; j < subscriptions.length; ++j) {
 						// Remove extraneous whitespace from each end of the
 						// subreddit name and normalize as lower-case.
-						newUser.subscribe(subscriptions[j].trim().toLowerCase());
+						newUser
+							.subscribe(subscriptions[j].trim().toLowerCase());
 					}
 				}
 				while (fileIn.hasNextLine()) {
@@ -75,9 +76,9 @@ public class Reddit {
 					String[] postData = fileIn.nextLine().split(",", 3);
 					String subreddit = postData[0].trim().toLowerCase();
 					PostType type = Enum.valueOf(PostType.class,
-							postData[1].trim()); // Use built-in Enum class to
-													// parse PostType.
-					String title = postData[2];
+						postData[1].trim()); // Use built-in Enum class to
+												// parse PostType.
+					String title = postData[2].trim();
 					newUser.addPost(subreddit, type, title);
 				}
 			}
@@ -146,32 +147,32 @@ public class Reddit {
 					builder.append(user.getName()).append('\t');
 					builder.append(user.getKarma().getLinkKarma()).append('\t');
 					builder.append(user.getKarma().getCommentKarma()).append(
-							'\n');
+						'\n');
 				}
 				System.out.print(builder.toString());
 				break;
 			case "d": // argument is the username to delete
 				db.delUser(argument.toLowerCase());
 				System.out.println("User " + argument.toLowerCase()
-						+ " deleted.");
+					+ " deleted.");
 				break;
 			case "l":
 				currentUser = doLoginAndLogout(currentUser,
-						argument.toLowerCase());
+					argument.toLowerCase());
 				break;
 			case "f":
 				Iterator<Post> frontpageIter = db.getFrontpage(currentUser)
-						.iterator(); // Get an iterator for the posts for the
-										// front page
+					.iterator(); // Get an iterator for the posts for the
+									// front page
 				System.out.println("Displaying the front page...");
 				runSubmenu(frontpageIter, currentUser, scanner);
 				break;
 			case "r":
 				// Get an iterator for the posts for the subreddit
 				Iterator<Post> subredditIter = db.getFrontpage(currentUser,
-						argument.toLowerCase()).iterator();
+					argument.toLowerCase()).iterator();
 				System.out.println("Displaying /r/" + argument.toLowerCase()
-						+ "...");
+					+ "...");
 				runSubmenu(subredditIter, currentUser, scanner);
 				break;
 			case "u":
@@ -182,9 +183,9 @@ public class Reddit {
 					break;
 				}
 				Iterator<Post> userPostsIter = targetUser.getPosted()
-						.iterator(); // Get iterator for all posts by user
+					.iterator(); // Get iterator for all posts by user
 				System.out.println("Displaying /u/" + argument.toLowerCase()
-						+ "...");
+					+ "...");
 				runSubmenu(userPostsIter, currentUser, scanner);
 				break;
 			case "x":
@@ -222,7 +223,7 @@ public class Reddit {
 	 * @param scanner A scanner that is connected to user input.
 	 */
 	private static void runSubmenu(Iterator<Post> postIter, User currentUser,
-			Scanner scanner) {
+		Scanner scanner) {
 		while (postIter.hasNext()) {
 			boolean moveToNext = true; // Tracks whether or not to move to the
 										// next value (false when an invalid
@@ -232,7 +233,7 @@ public class Reddit {
 					// invalid command is entered.
 				moveToNext = true;
 				System.out.println(currentPost.getKarma() + "\t"
-						+ currentPost.getTitle().trim());
+					+ currentPost.getTitle());
 				displayInputPrompt(currentUser);
 				String command = scanner.nextLine(); // The command for the
 														// submenu
@@ -285,7 +286,7 @@ public class Reddit {
 		if (newUserName.equals("")) { // Logout
 			if (currentUser != null) {
 				System.out.println("User " + currentUser.getName()
-						+ " logged out.");
+					+ " logged out.");
 				currentUser = null;
 			}
 			else {
@@ -295,7 +296,7 @@ public class Reddit {
 		else { // Login
 			if (currentUser != null) {
 				System.out.println("User " + currentUser.getName()
-						+ " already logged in.");
+					+ " already logged in.");
 			}
 			else {
 				currentUser = db.findUser(newUserName);
@@ -304,7 +305,7 @@ public class Reddit {
 				}
 				else {
 					System.out.println("User " + currentUser.getName()
-							+ " logged in.");
+						+ " logged in.");
 				}
 			}
 		}
@@ -320,7 +321,7 @@ public class Reddit {
 	 */
 	private static boolean commandAlwaysHasArgument(String command) {
 		return command.equals("d") || command.equals("r")
-				|| command.equals("u");
+			|| command.equals("u");
 	}
 
 	/**
