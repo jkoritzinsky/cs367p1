@@ -116,7 +116,7 @@ public class Reddit {
 			String argument = ""; // Default value for command argument
 			if (commandAlwaysHasArgument(command)) {
 				if (splitEntry.length == 1) {
-					System.out.print("Invalid command!");
+					System.out.println("Invalid command!");
 					continue;
 				}
 				argument = splitEntry[1];
