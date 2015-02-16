@@ -194,6 +194,7 @@ public class Reddit {
 									// program open for them to see the final
 									// output.
 				exitMainMenu = true;
+				break;
 			default:
 				System.out.println("Invalid command!");
 				break;
