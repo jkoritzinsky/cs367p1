@@ -180,9 +180,10 @@ public class User {
 	public void undoLike(Post post) {
 		if (post == null)
 			throw new IllegalArgumentException("post");
-		liked.remove(post);
-		post.downvote();
-		post.downvote(); // Two downvotes = undoing one upvote
+		if(liked.remove(post)) {
+			post.downvote();
+			post.downvote(); // Two downvotes = undoing one upvote
+		}
 	}
 
 	/**
@@ -213,8 +214,9 @@ public class User {
 	public void undoDislike(Post post) {
 		if (post == null)
 			throw new IllegalArgumentException("post");
-		disliked.remove(post);
-		post.upvote(); // One upvote + one downvote
-		post.downvote(); // == Undoing one downvote
+		if(disliked.remove(post)) {
+			post.upvote(); // One upvote + one downvote
+			post.downvote(); // == Undoing one downvote
+		}
 	}
 }
